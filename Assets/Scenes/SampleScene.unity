@@ -1170,6 +1170,7 @@ MonoBehaviour:
   - {fileID: 1313370591}
   - {fileID: 2070943646}
   - {fileID: 2074541300}
+  moveSpeed: 10
 --- !u!1001 &1125701834
 PrefabInstance:
   m_ObjectHideFlags: 0
