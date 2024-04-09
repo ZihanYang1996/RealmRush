@@ -1,0 +1,73 @@
+{
+    "name": "testInput",
+    "maps": [
+        {
+            "name": "MapA",
+            "id": "fb8b7c8f-8ad1-4c7c-a49a-e4d30064ff4a",
+            "actions": [
+                {
+                    "name": "mousePosition",
+                    "type": "PassThrough",
+                    "id": "801c5a70-8402-4a0c-bef5-4e816c8cb41a",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "c580bc76-a186-491c-ac15-0c2644860a57",
+                    "path": "",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "mousePosition",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "4b135c29-c90f-4df5-ad4f-f635670047bc",
+                    "path": "<Mouse>/position",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "mousePosition",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "MapB",
+            "id": "60647dec-95b6-40fe-8a0b-74737680e1fa",
+            "actions": [
+                {
+                    "name": "mousePosition",
+                    "type": "Button",
+                    "id": "a714c154-93ac-4242-9a2f-e47146b2b3a0",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "26a045d4-17f9-4c8b-8cee-fb0d41450c64",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "mousePosition",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}
