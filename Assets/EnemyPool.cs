@@ -30,7 +30,7 @@ public class EnemyPool : MonoBehaviour
     {
         // Will set the position and rotation later
         GameObject newEnemy = Instantiate(enemyPrefab);
-        Debug.Log("New enemy created");
+        // Debug.Log("New enemy created");
         return newEnemy;
     }
 
