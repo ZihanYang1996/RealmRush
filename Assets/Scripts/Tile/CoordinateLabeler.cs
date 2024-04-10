@@ -65,7 +65,6 @@ public class CoordinateLabeler : MonoBehaviour
     {
         if (Keyboard.current[Key.C].wasPressedThisFrame)
         {
-            Debug.Log("Toggle labels");
             label.enabled = !label.enabled;  // Or label.enabled = !label.IsActive();
         }
     }
