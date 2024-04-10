@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -9,6 +11,8 @@ public class EnemyMover : MonoBehaviour
     [SerializeField] [Range(0.1f, 20f)] float moveSpeed = 1f;
     void Start()
     {
+        FindPath();
+        ReturnToStart();
         StartCoroutine(FollowPath(waypoints));
     }
 
@@ -16,6 +20,20 @@ public class EnemyMover : MonoBehaviour
     void Update()
     {
         // Move(new Vector3(0, 0, 20), moveSpeed);
+    }
+
+    void FindPath()
+    {
+        GameObject path = GameObject.Find("Path");
+        foreach (Transform waypoint in path.transform)
+        {
+            waypoints.Add(waypoint.gameObject.GetComponent<Waypoint>());
+        }
+    }
+
+    void ReturnToStart()
+    {
+        transform.position = waypoints[0].transform.position;
     }
 
     IEnumerator FollowPath(List<Waypoint> waypoints)
@@ -29,6 +47,7 @@ public class EnemyMover : MonoBehaviour
                 yield return new WaitForEndOfFrame();
             }
         }
+        Destroy(gameObject);
     }
 
     void Move(Vector3 position, float speed)
