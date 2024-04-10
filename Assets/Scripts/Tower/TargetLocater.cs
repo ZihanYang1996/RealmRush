@@ -4,12 +4,14 @@ using UnityEngine;
 
 public class TargetLocater : MonoBehaviour
 {
-    Transform target;
+    GameObject target;
     Transform weapon;
+    ParticleSystem particleSystem;
     void Awake()
     {
-        target = GameObject.Find("Enemy").transform;
+        target = GameObject.Find("Enemy");
         weapon = transform.Find("BallistaTopMesh");
+        particleSystem = weapon.GetComponentInChildren<ParticleSystem>();
     }
 
     // Update is called once per frame
@@ -20,6 +22,7 @@ public class TargetLocater : MonoBehaviour
 
     void AimWeapon()
     {
+        if (!target) return;  // if target is null, return
         weapon.LookAt(target.transform);
     }
 }

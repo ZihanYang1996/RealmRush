@@ -13,6 +13,7 @@ public class Waypoint : MonoBehaviour, IPointerClickHandler
     GameObject towers;
 
     [SerializeField] bool isPlaceable = false;
+    public bool IsPlaceable { get { return isPlaceable; } }
     [SerializeField] GameObject towerPrefab;
 
     void Start()
@@ -29,6 +30,17 @@ public class Waypoint : MonoBehaviour, IPointerClickHandler
         // getMousePosition();
         // getMouseClick();
         // Debug.Log(mouseClick.triggered);
+    }
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        if (!isPlaceable) return;
+        if (eventData.button == PointerEventData.InputButton.Left)
+        {
+            GameObject tower = Instantiate(towerPrefab, transform.position, Quaternion.identity);
+            tower.transform.SetParent(towers.transform); // or tower.transform.parent = towers.transform;
+            isPlaceable = false;
+        }
     }
 
     void OnMouseOverRaycast()
@@ -66,14 +78,5 @@ public class Waypoint : MonoBehaviour, IPointerClickHandler
         }
     }
 
-    public void OnPointerClick(PointerEventData eventData)
-    {
-        if (!isPlaceable) return;
-        if (eventData.button == PointerEventData.InputButton.Left)
-        {
-            GameObject tower = Instantiate(towerPrefab, transform.position, Quaternion.identity);
-            tower.transform.SetParent(towers.transform); // or tower.transform.parent = towers.transform;
-            isPlaceable = false;
-        }
-    }
+
 }
