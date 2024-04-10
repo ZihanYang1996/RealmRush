@@ -3,15 +3,24 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Pool;
 using UnityEngine.UIElements;
 
 public class EnemyMover : MonoBehaviour
 {
     [SerializeField] List<Waypoint> waypoints = new List<Waypoint>();
     [SerializeField] [Range(0.1f, 20f)] float moveSpeed = 1f;
-    void Start()
+    IObjectPool<GameObject> enemyPool;
+
+    void Awake()
     {
+        // Get enemy pool
+        enemyPool = GameObject.Find("Enemy Pool")?.GetComponent<EnemyPool>().ObjectPool;
         FindPath();
+    }
+
+    void OnEnable()
+    {
         ReturnToStart();
         StartCoroutine(FollowPath(waypoints));
     }
@@ -47,7 +56,7 @@ public class EnemyMover : MonoBehaviour
                 yield return new WaitForEndOfFrame();
             }
         }
-        Destroy(gameObject);
+        enemyPool?.Release(gameObject);
     }
 
     void Move(Vector3 position, float speed)

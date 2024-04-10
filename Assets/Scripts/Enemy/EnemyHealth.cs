@@ -1,14 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Pool;
 
 public class EnemyHealth : MonoBehaviour
 {
     [SerializeField] int maxhealth = 10;
     public int currentHealth { get; private set;}  // private set means that the value of currentHealth can only be set within this script
+    
+    IObjectPool<GameObject> enemyPool;
 
+    void Awake()
+    {
+        enemyPool = GameObject.Find("Enemy Pool")?.GetComponent<EnemyPool>().ObjectPool;
+    }
 
-    void Start()
+    void OnEnable()
     {
         currentHealth = maxhealth;
     }
@@ -18,7 +25,7 @@ public class EnemyHealth : MonoBehaviour
         currentHealth--;
         if (currentHealth <= 0)
         {
-            Destroy(gameObject);
+            enemyPool?.Release(gameObject);
         }
     }
 }
