@@ -8,11 +8,13 @@ public class EnemyHealth : MonoBehaviour
     [SerializeField] int maxhealth = 10;
     public int currentHealth { get; private set;}  // private set means that the value of currentHealth can only be set within this script
     
+    Enemy enemy;
     IObjectPool<GameObject> enemyPool;
 
     void Awake()
     {
         enemyPool = GameObject.Find("Enemy Pool")?.GetComponent<EnemyPool>().ObjectPool;
+        enemy = gameObject.GetComponent<Enemy>();
     }
 
     void OnEnable()
@@ -26,6 +28,7 @@ public class EnemyHealth : MonoBehaviour
         if (currentHealth <= 0)
         {
             enemyPool?.Release(gameObject);
+            enemy.RewardGold();
         }
     }
 }

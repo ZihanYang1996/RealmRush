@@ -11,11 +11,13 @@ public class EnemyMover : MonoBehaviour
     [SerializeField] List<Waypoint> waypoints = new List<Waypoint>();
     [SerializeField] [Range(0.1f, 20f)] float moveSpeed = 1f;
     IObjectPool<GameObject> enemyPool;
+    Enemy enemy;
 
     void Awake()
     {
         // Get enemy pool
         enemyPool = GameObject.Find("Enemy Pool")?.GetComponent<EnemyPool>().ObjectPool;
+        enemy = gameObject.GetComponent<Enemy>();
         FindPath();
     }
 
@@ -57,6 +59,7 @@ public class EnemyMover : MonoBehaviour
             }
         }
         enemyPool?.Release(gameObject);
+        enemy.PunishGold();
     }
 
     void Move(Vector3 position, float speed)

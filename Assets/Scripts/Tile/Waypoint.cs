@@ -37,9 +37,11 @@ public class Waypoint : MonoBehaviour, IPointerClickHandler
         if (!isPlaceable) return;
         if (eventData.button == PointerEventData.InputButton.Left)
         {
-            GameObject tower = Instantiate(towerPrefab, transform.position, Quaternion.identity);
-            tower.transform.SetParent(towers.transform); // or tower.transform.parent = towers.transform;
-            isPlaceable = false;
+            isPlaceable = towerPrefab.GetComponent<Tower>().CreateTower(towerPrefab,
+                                                                        transform.position,
+                                                                        Quaternion.identity,
+                                                                        towers);
+            isPlaceable = !isPlaceable;
         }
     }
 

@@ -73,7 +73,7 @@ public class EnemyPool : MonoBehaviour
             newEnemy.transform.rotation = Quaternion.identity;  // set the rotation to identity, meaning no rotation
             
             newEnemy.transform.SetParent(transform);  // or newEnemy.transform.parent = transform;
-            newEnemy.name = "Enemy";
+            newEnemy.name = "Enemy Instance";
 
             yield return new WaitForSeconds(spawnTimer);
         }
