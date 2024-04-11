@@ -28,7 +28,7 @@ public class Bank : MonoBehaviour
         Debug.Log("Current balance: " + currentBalance);
         if (currentBalance < 0)
         {
-            throw new NotImplementedException("TBD");
+            GameManager.Instance.GameOver();
         }
     }
 
