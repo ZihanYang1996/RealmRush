@@ -1,11 +1,13 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Pool;
 using UnityEngine.UIElements;
 
+[RequireComponent(typeof(Enemy))]
 public class EnemyMover : MonoBehaviour
 {
     [SerializeField] List<Waypoint> waypoints = new List<Waypoint>();
@@ -35,16 +37,28 @@ public class EnemyMover : MonoBehaviour
 
     void FindPath()
     {
+        waypoints.Clear();
         GameObject path = GameObject.Find("Path");
         foreach (Transform waypoint in path.transform)
         {
-            waypoints.Add(waypoint.gameObject.GetComponent<Waypoint>());
+            Waypoint wp = waypoint.gameObject.GetComponent<Waypoint>();
+            if (wp)
+            {
+                waypoints.Add(wp);
+            }
+            
         }
     }
 
     void ReturnToStart()
     {
         transform.position = waypoints[0].transform.position;
+    }
+
+    void FinishPath()
+    {
+        enemyPool?.Release(gameObject);
+        enemy.PunishGold();
     }
 
     IEnumerator FollowPath(List<Waypoint> waypoints)
@@ -58,8 +72,7 @@ public class EnemyMover : MonoBehaviour
                 yield return new WaitForEndOfFrame();
             }
         }
-        enemyPool?.Release(gameObject);
-        enemy.PunishGold();
+        FinishPath();
     }
 
     void Move(Vector3 position, float speed)

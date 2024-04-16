@@ -5,6 +5,7 @@ using TMPro;
 using UnityEngine.InputSystem;
 
 [ExecuteAlways]
+[RequireComponent(typeof(TextMeshPro))]
 public class CoordinateLabeler : MonoBehaviour
 {
     TextMeshPro label;
@@ -36,8 +37,15 @@ public class CoordinateLabeler : MonoBehaviour
 
     void DisplayCoordinates()
     {
+        // Set the coordinates of the label to the parent's position divided by the editor snap settings
+        // Only when in the editor
+        #if UNITY_EDITOR
         coordinates.x = Mathf.RoundToInt(transform.parent.position.x / UnityEditor.EditorSnapSettings.move.x);
         coordinates.y = Mathf.RoundToInt(transform.parent.position.z / UnityEditor.EditorSnapSettings.move.z);
+        #else
+        coordinates.x = Mathf.RoundToInt(transform.parent.position.x);
+        coordinates.y = Mathf.RoundToInt(transform.parent.position.z);
+        #endif
 
         // Set the label text to the coordinates
         label.text = $"{coordinates.x},{coordinates.y}";

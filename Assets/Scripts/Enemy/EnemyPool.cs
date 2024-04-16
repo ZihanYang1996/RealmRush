@@ -6,7 +6,7 @@ using UnityEngine.Pool;
 public class EnemyPool : MonoBehaviour
 {
     [SerializeField] GameObject enemyPrefab;
-    [SerializeField] float spawnTimer = 5f;
+    [SerializeField] [Range(0.1f, 30f)] float spawnTimer = 5f;
     [SerializeField] int defaultPoolSize = 10;
     [SerializeField] int maxPoolSize = 20;
 

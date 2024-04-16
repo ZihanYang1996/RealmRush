@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Pool;
 
+[RequireComponent(typeof(Enemy))]  // This will add the Enemy component if it doesn't already exist
 public class EnemyHealth : MonoBehaviour
 {
     [SerializeField] int maxhealth = 10;
