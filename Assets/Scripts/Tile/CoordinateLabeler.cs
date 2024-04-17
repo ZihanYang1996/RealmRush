@@ -18,7 +18,16 @@ public class CoordinateLabeler : MonoBehaviour
     void Awake()
     {
         label = gameObject.GetComponent<TextMeshPro>();
-        label.enabled = false;  // Default to false
+        
+        if (Application.isPlaying)
+        {
+            label.enabled = false;  // Default to false in play mode
+        }
+        else
+        {
+            label.enabled = true;  // Default to true in edit mode
+        }
+        
         waypoint = gameObject.GetComponentInParent<Waypoint>();
         DisplayCoordinates();
         UpdateObjectName();
