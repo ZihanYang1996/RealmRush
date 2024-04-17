@@ -10,7 +10,7 @@ using UnityEngine.UIElements;
 [RequireComponent(typeof(Enemy))]
 public class EnemyMover : MonoBehaviour
 {
-    [SerializeField] List<Waypoint> waypoints = new List<Waypoint>();
+    [SerializeField] List<Tile> waypoints = new List<Tile>();
     [SerializeField] [Range(0.1f, 20f)] float moveSpeed = 1f;
     IObjectPool<GameObject> enemyPool;
     Enemy enemy;
@@ -41,7 +41,7 @@ public class EnemyMover : MonoBehaviour
         GameObject path = GameObject.Find("Path");
         foreach (Transform waypoint in path.transform)
         {
-            Waypoint wp = waypoint.gameObject.GetComponent<Waypoint>();
+            Tile wp = waypoint.gameObject.GetComponent<Tile>();
             if (wp)
             {
                 waypoints.Add(wp);
@@ -61,9 +61,9 @@ public class EnemyMover : MonoBehaviour
         enemy.PunishGold();
     }
 
-    IEnumerator FollowPath(List<Waypoint> waypoints)
+    IEnumerator FollowPath(List<Tile> waypoints)
     {
-        foreach (Waypoint waypoint in waypoints)
+        foreach (Tile waypoint in waypoints)
         {
             transform.LookAt(waypoint.transform.position);
             while (Vector3.Distance(transform.position, waypoint.transform.position) > Mathf.Epsilon)

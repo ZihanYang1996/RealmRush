@@ -5,7 +5,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
 
-public class Waypoint : MonoBehaviour, IPointerClickHandler
+public class Tile : MonoBehaviour, IPointerClickHandler
 {
     InputAction mousePosition;
     InputAction mouseClick;
@@ -16,12 +16,28 @@ public class Waypoint : MonoBehaviour, IPointerClickHandler
     public bool IsPlaceable { get { return isPlaceable; } }
     [SerializeField] GameObject towerPrefab;
 
-    void Start()
+    GridManager gridManager;
+    Vector2Int coordinates;
+
+    void Awake()
     {
         // Using the default action asset (InputSystem.actions)
         mouseClick = InputSystem.actions.FindActionMap("UI").FindAction("Click");
         mousePosition = InputSystem.actions.FindActionMap("Player").FindAction("MousePosition");
         towers = GameObject.Find("Towers");
+        gridManager = FindObjectOfType<GridManager>();
+
+        // Get the coordinates of the tile and set the corresponding node's isWalkable property based on the isPlaceable property
+        coordinates = gridManager.GetCoordinatesFromPosition(transform.position);
+        if (gridManager.Grid.ContainsKey(coordinates))
+        {
+            gridManager.Grid[coordinates].isWalkable = isPlaceable;
+        }
+    }
+
+    void Start()
+    {
+
     }
 
     void Update()
@@ -42,6 +58,12 @@ public class Waypoint : MonoBehaviour, IPointerClickHandler
                                                                         Quaternion.identity,
                                                                         towers);
             isPlaceable = !isPlaceable;
+
+            // Update the isWalkable property of the corresponding node in the grid
+            if (gridManager.Grid.ContainsKey(coordinates))
+            {
+                gridManager.Grid[coordinates].isWalkable = isPlaceable;
+            }
         }
     }
 
