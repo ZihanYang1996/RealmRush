@@ -47,7 +47,7 @@ public class EnemyMover : MonoBehaviour
         List<Node> path = new List<Node>();
         if (initialPath)
         {
-            path = pathFinder.BreadthFirstSearch(pathFinder.StartCoordinates, pathFinder.DestinationCoordinates);
+            path = pathFinder.DefaultPath;
         }
         else
         {
