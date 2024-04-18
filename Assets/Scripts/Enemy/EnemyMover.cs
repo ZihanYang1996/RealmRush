@@ -88,9 +88,11 @@ public class EnemyMover : MonoBehaviour
 
     IEnumerator FollowPath(List<Vector3> waypoints)
     {
+        if (waypoints.Count == 0) yield break;  // No waypoints
         // Debug.Log("Following path");
-        foreach (Vector3 waypoint in waypoints)
+        for (int i = 1; i < waypoints.Count; i++)
         {
+            Vector3 waypoint = waypoints[i];
             transform.LookAt(waypoint);
             while (Vector3.Distance(transform.position, waypoint) > Mathf.Epsilon)
             {
