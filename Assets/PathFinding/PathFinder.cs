@@ -20,7 +20,7 @@ public class PathFinder : MonoBehaviour
         gridManager = FindObjectOfType<GridManager>();
         grid = gridManager?.Grid;
 
-        transform.position = gridManager.GetPositionFromCoordinates(startCoordinates);
+        // transform.position = gridManager.GetPositionFromCoordinates(startCoordinates);  // Move the EnemyPool object to the start position, not necessary
 
         BreadthFirstSearch(startCoordinates, destinationCoordinates);
     }
@@ -95,8 +95,10 @@ public class PathFinder : MonoBehaviour
                 currentTracebackNode.isPath = true;
                 path.Add(currentTracebackNode);
             }
+            path.Reverse();
         }
-        path.Reverse();
+
+        
         // foreach (Node node in path)
         // {
         //     Debug.Log(node.coordinates);

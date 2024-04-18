@@ -6,7 +6,7 @@ using UnityEngine.Pool;
 public class EnemyPool : MonoBehaviour
 {
     [SerializeField] GameObject enemyPrefab;
-    [SerializeField] [Range(0.1f, 30f)] float spawnTimer = 5f;
+    [SerializeField][Range(0.1f, 30f)] float spawnTimer = 5f;
     [SerializeField] int defaultPoolSize = 10;
     [SerializeField] int maxPoolSize = 20;
 
@@ -30,6 +30,9 @@ public class EnemyPool : MonoBehaviour
     {
         // Will set the position and rotation later
         GameObject newEnemy = Instantiate(enemyPrefab);
+        newEnemy.transform.SetParent(transform);  // or newEnemy.transform.parent = transform;
+        newEnemy.name = "Enemy Instance";
+
         // Debug.Log("New enemy created");
         return newEnemy;
     }
@@ -69,12 +72,8 @@ public class EnemyPool : MonoBehaviour
             GameObject newEnemy = ObjectPool.Get();
 
             // The position and rotation maybe not needed to be set, as it will be set in EnemyMover.cs
-            newEnemy.transform.position = transform.position;  // set the position to the spawner's position
-            newEnemy.transform.rotation = Quaternion.identity;  // set the rotation to identity, meaning no rotation
-            
-            newEnemy.transform.SetParent(transform);  // or newEnemy.transform.parent = transform;
-            newEnemy.name = "Enemy Instance";
-
+            // newEnemy.transform.position = transform.position;  // set the position to the spawner's position
+            // newEnemy.transform.rotation = Quaternion.identity;  // set the rotation to identity, meaning no rotation
             yield return new WaitForSeconds(spawnTimer);
         }
     }

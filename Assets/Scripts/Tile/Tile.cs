@@ -17,6 +17,7 @@ public class Tile : MonoBehaviour, IPointerClickHandler
     [SerializeField] GameObject towerPrefab;
 
     GridManager gridManager;
+    PathFinder pathFinder;
     Vector2Int coordinates;
 
     void Awake()
@@ -26,6 +27,7 @@ public class Tile : MonoBehaviour, IPointerClickHandler
         mousePosition = InputSystem.actions.FindActionMap("Player").FindAction("MousePosition");
         towers = GameObject.Find("Towers");
         gridManager = FindObjectOfType<GridManager>();
+        pathFinder = FindObjectOfType<PathFinder>();
 
         // Get the coordinates of the tile and set the corresponding node's isWalkable property based on the isPlaceable property
         coordinates = gridManager.GetCoordinatesFromPosition(transform.position);
@@ -50,9 +52,24 @@ public class Tile : MonoBehaviour, IPointerClickHandler
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        if (!isPlaceable) return;
+        if (!isPlaceable || !gridManager.Grid[coordinates].isWalkable)  // If the tile is not placeable or the corresponding node is not walkable, return
+        {
+            Debug.Log("Cannot place tower here, is it Placeable? " + isPlaceable + " isWalkable? " + gridManager.Grid[coordinates].isWalkable);
+            return;
+        }
         if (eventData.button == PointerEventData.InputButton.Left)
         {
+            // Check if all paths are blocked after placing the tower
+            gridManager.Grid[coordinates].isWalkable = false;
+            List<Node> path = pathFinder.BreadthFirstSearch(pathFinder.StartCoordinates, pathFinder.DestinationCoordinates);
+            // If all paths are blocked, set the isWalkable back to true and return
+            if (path.Count == 0)
+            {
+                gridManager.Grid[coordinates].isWalkable = true;
+                Debug.Log("Cannot place tower here, all paths are blocked.");
+                return;
+            }
+            // Otherwise, create the tower
             isPlaceable = towerPrefab.GetComponent<Tower>().CreateTower(towerPrefab,
                                                                         transform.position,
                                                                         Quaternion.identity,

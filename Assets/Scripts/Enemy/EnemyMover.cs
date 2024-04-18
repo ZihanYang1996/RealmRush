@@ -17,6 +17,8 @@ public class EnemyMover : MonoBehaviour
     PathFinder pathFinder;
     GridManager gridManager;
 
+    Coroutine followPathCoroutine;
+
     void Awake()
     {
         // Get enemy pool
@@ -24,13 +26,13 @@ public class EnemyMover : MonoBehaviour
         enemy = gameObject.GetComponent<Enemy>();
         pathFinder = FindObjectOfType<PathFinder>();
         gridManager = FindObjectOfType<GridManager>();
-        FindPath(initialPath: true);
     }
 
     void OnEnable()
     {
+        FindPath(initialPath: true);
         ReturnToStart();
-        StartCoroutine(FollowPath(waypoints));
+        followPathCoroutine = StartCoroutine(FollowPath(waypoints));
     }
 
     // Update is called once per frame
@@ -61,8 +63,10 @@ public class EnemyMover : MonoBehaviour
 
     void ReturnToStart()
     {
-        Debug.Log("Returning to start");
+        // Debug.Log("Returning to start: " + waypoints[0] + " from " + transform.position);
         transform.position = waypoints[0];
+        // Debug.Log("Returned to start: " + waypoints[0] + " from " + transform.position);
+
     }
 
     void FinishPath()
@@ -73,11 +77,13 @@ public class EnemyMover : MonoBehaviour
 
     IEnumerator FollowPath(List<Vector3> waypoints)
     {
+        // Debug.Log("Following path");
         foreach (Vector3 waypoint in waypoints)
         {
             transform.LookAt(waypoint);
             while (Vector3.Distance(transform.position, waypoint) > Mathf.Epsilon)
             {
+                // Debug.Log("Moving to " + waypoint + " from " + transform.position);
                 Move(waypoint, moveSpeed);
                 yield return new WaitForEndOfFrame();
             }

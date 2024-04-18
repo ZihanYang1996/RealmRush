@@ -19471,6 +19471,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Bank GameObject
       objectReference: {fileID: 0}
+    - target: {fileID: 5731641316269897703, guid: 0cd092c1d350941438bd57ed62c93254, type: 3}
+      propertyPath: startingBalance
+      value: 10000
+      objectReference: {fileID: 0}
     - target: {fileID: 7921724639483801440, guid: 0cd092c1d350941438bd57ed62c93254, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -19720,7 +19724,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5587878085065856178, guid: 266a502fab3a00f4db223babc8e7db51, type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6646636286661036819, guid: 266a502fab3a00f4db223babc8e7db51, type: 3}
       propertyPath: m_Name
