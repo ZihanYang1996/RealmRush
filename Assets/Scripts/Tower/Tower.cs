@@ -32,12 +32,12 @@ public class Tower : MonoBehaviour
         
         // Deduct the cost of the tower from the bank's current balance
         bank.Withdraw(cost);
-        
         return newTower;
     }
 
     public void DestroyTower(bool refound = false)
     {
+        bank = FindObjectOfType<Bank>();
         if (refound)
         {
             bank?.Deposit(cost);
