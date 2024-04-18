@@ -6,13 +6,11 @@ using UnityEngine;
 public class PathFinder : MonoBehaviour
 {
     [SerializeField] Vector2Int startCoordinates;
+    public Vector2Int StartCoordinates { get { return startCoordinates; } }
     [SerializeField] Vector2Int destinationCoordinates;
+    public Vector2Int DestinationCoordinates { get { return destinationCoordinates; } }
 
-    Node startNode;
-    Node destinationNode;
-    Node currentSearchNode;
 
-    Queue<Node> frontier = new Queue<Node>();
     Vector2Int[] directions = { Vector2Int.up, Vector2Int.right, Vector2Int.down, Vector2Int.left };
     GridManager gridManager;
     Dictionary<Vector2Int, Node> grid;
@@ -22,33 +20,42 @@ public class PathFinder : MonoBehaviour
         gridManager = FindObjectOfType<GridManager>();
         grid = gridManager?.Grid;
 
-        startNode = grid[startCoordinates];
-        destinationNode = grid[destinationCoordinates];
-        BreadthFirstSearch();
+        transform.position = gridManager.GetPositionFromCoordinates(startCoordinates);
+
+        BreadthFirstSearch(startCoordinates, destinationCoordinates);
     }
 
 
-    void ExploreNeighbors(Node currentNode)
+    List<Node> GetNeighbors(Node currentNode)
     {
-
+        List<Node> neighbors = new List<Node>();
         foreach (Vector2Int direction in directions)
         {
             Vector2Int neighborCoordinates = currentNode.coordinates + direction;
             if (grid.ContainsKey(neighborCoordinates))
             {
                 Node neighborNode = grid[neighborCoordinates];
-                if (neighborNode.isWalkable && !neighborNode.isExplored)
+                if (neighborNode.isWalkable)
                 {
-                    frontier.Enqueue(neighborNode);
-                    neighborNode.isExplored = true;
-                    neighborNode.comeFrom = currentNode;
+                    neighbors.Add(neighborNode);
                 }
             }
         }
+        return neighbors;
     }
 
-    void BreadthFirstSearch()
+    public List<Node> BreadthFirstSearch(Vector2Int startCoordinates, Vector2Int destinationCoordinates)
     {
+        Node currentSearchNode;
+        Queue<Node> frontier = new Queue<Node>();
+        Dictionary<Node, Node> comeFrom = new Dictionary<Node, Node>();
+        List<Node> path = new List<Node>();
+
+        Node startNode = grid[startCoordinates];
+        Node destinationNode = grid[destinationCoordinates];
+
+
+
         bool targetReached = false;
 
         if (startNode.isWalkable)
@@ -65,22 +72,36 @@ public class PathFinder : MonoBehaviour
             {
                 targetReached = true;
             }
-            ExploreNeighbors(currentSearchNode);
+            foreach (Node neighbor in GetNeighbors(currentSearchNode))
+            {
+                if (!comeFrom.ContainsKey(neighbor))
+                {
+                    frontier.Enqueue(neighbor);
+                    comeFrom.Add(neighbor, currentSearchNode);
+                    neighbor.isExplored = true;
+                }
+
+            }
         }
 
         if (targetReached)
         {
             Node currentTracebackNode = destinationNode;
             destinationNode.isPath = true;
+            path.Add(currentTracebackNode);
             while (currentTracebackNode != startNode)
             {
-                Debug.Log(currentTracebackNode.coordinates);
-                currentTracebackNode = currentTracebackNode.comeFrom;
+                currentTracebackNode = comeFrom[currentTracebackNode];
                 currentTracebackNode.isPath = true;
+                path.Add(currentTracebackNode);
             }
         }
-
-
+        path.Reverse();
+        // foreach (Node node in path)
+        // {
+        //     Debug.Log(node.coordinates);
+        // }
+        return path;
     }
 
 }

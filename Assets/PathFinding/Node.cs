@@ -7,9 +7,8 @@ public class Node
 {
     public Vector2Int coordinates;
     public bool isWalkable;
-    public bool isExplored;
-    public bool isPath;
-    public Node comeFrom;  // This is the parent node
+    public bool isExplored;  // For coloring only
+    public bool isPath;  // For coloring only
 
     public Node(Vector2Int coordinates, bool isWalkable)
     {
