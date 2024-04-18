@@ -30,15 +30,26 @@ public class EnemyMover : MonoBehaviour
 
     void OnEnable()
     {
-        FindPath(initialPath: true);
-        ReturnToStart();
-        followPathCoroutine = StartCoroutine(FollowPath(waypoints));
+        EventManager.Instance.RecreatePathMessageReceived += MoveEnemy;
+        MoveEnemy(initialPath: true);
     }
 
-    // Update is called once per frame
-    void Update()
+    void OnDisable()
     {
-        // Move(new Vector3(0, 0, 20), moveSpeed);
+        EventManager.Instance.RecreatePathMessageReceived -= MoveEnemy;
+        if (followPathCoroutine != null) StopCoroutine(followPathCoroutine);
+    }
+
+    void MoveEnemy(bool initialPath = true)
+    {
+        if (!initialPath) Debug.Log("Recreating path");  // Debug
+        // Find path, wether it's the initial path or not
+        FindPath(initialPath);
+        // Return to start only if it's the initial path
+        if (initialPath) ReturnToStart();
+        // Stop the current coroutine and start a new one
+        if (followPathCoroutine != null) StopCoroutine(followPathCoroutine);
+        followPathCoroutine = StartCoroutine(FollowPath(waypoints));
     }
 
     void FindPath(bool initialPath = true)

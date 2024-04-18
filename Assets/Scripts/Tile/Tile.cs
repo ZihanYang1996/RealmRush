@@ -64,7 +64,7 @@ public class Tile : MonoBehaviour, IPointerClickHandler
                                                                         transform.position,
                                                                         Quaternion.identity,
                                                                         towers);
-            
+
 
             // If the tower was created, meaning there are sufficient funds and the tower was placed successfully
             if (towerCreated)
@@ -82,6 +82,8 @@ public class Tile : MonoBehaviour, IPointerClickHandler
                 }
                 // Otherwise, the tower was placed successfully, set isPlaceable to false
                 isPlaceable = false;
+                // Send a message to the EventManager to ask enemys to recreate the path
+                EventManager.Instance.SendRecreatePathMessage(initialPath: false);
             }
 
 
