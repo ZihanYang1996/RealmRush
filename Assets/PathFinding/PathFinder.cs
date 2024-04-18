@@ -129,10 +129,4 @@ public class PathFinder : MonoBehaviour
         // }
         return path;
     }
-
-    public void NotifyReceivers()
-    {
-        BroadcastMessage("FindPath", false, SendMessageOptions.DontRequireReceiver);
-    }
-
 }
