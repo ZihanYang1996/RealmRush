@@ -59,28 +59,32 @@ public class Tile : MonoBehaviour, IPointerClickHandler
         }
         if (eventData.button == PointerEventData.InputButton.Left)
         {
-            // Check if all paths are blocked after placing the tower
-            gridManager.Grid[coordinates].isWalkable = false;
-            bool allPathsBlocked = !pathFinder.generateDefaultPath();
-            // If all paths are blocked, set the isWalkable back to true and return
-            if (allPathsBlocked)
-            {
-                gridManager.Grid[coordinates].isWalkable = true;
-                Debug.Log("Cannot place tower here, all paths are blocked.");
-                return;
-            }
-            // Otherwise, create the tower
-            isPlaceable = towerPrefab.GetComponent<Tower>().CreateTower(towerPrefab,
+            // First, try create the tower
+            GameObject towerCreated = towerPrefab.GetComponent<Tower>().CreateTower(towerPrefab,
                                                                         transform.position,
                                                                         Quaternion.identity,
                                                                         towers);
-            isPlaceable = !isPlaceable;
+            
 
-            // Update the isWalkable property of the corresponding node in the grid
-            if (gridManager.Grid.ContainsKey(coordinates))
+            // If the tower was created, meaning there are sufficient funds and the tower was placed successfully
+            if (towerCreated)
             {
-                gridManager.Grid[coordinates].isWalkable = isPlaceable;
+                // Check if all paths are blocked after placing the tower
+                gridManager.Grid[coordinates].isWalkable = false;
+                bool allPathsBlocked = !pathFinder.generateDefaultPath();
+                // If all paths are blocked, set the isWalkable back to true, destroy the tower and return
+                if (allPathsBlocked)
+                {
+                    gridManager.Grid[coordinates].isWalkable = true;
+                    towerCreated.GetComponent<Tower>().DestroyTower(refound: true);
+                    Debug.Log("Cannot place tower here, all paths are blocked.");
+                    return;
+                }
+                // Otherwise, the tower was placed successfully, set isPlaceable to false
+                isPlaceable = false;
             }
+
+
         }
     }
 
