@@ -15,6 +15,15 @@ public class PathFinder : MonoBehaviour
     GridManager gridManager;
     Dictionary<Vector2Int, Node> grid;
 
+    List<Node> defaultPath;
+    public List<Node> DefaultPath
+    {
+        get
+        {
+            return new List<Node>(defaultPath);
+        }
+    }
+
     void Awake()
     {
         gridManager = FindObjectOfType<GridManager>();
@@ -22,7 +31,22 @@ public class PathFinder : MonoBehaviour
 
         // transform.position = gridManager.GetPositionFromCoordinates(startCoordinates);  // Move the EnemyPool object to the start position, not necessary
 
-        BreadthFirstSearch(startCoordinates, destinationCoordinates);
+        defaultPath = BreadthFirstSearch(startCoordinates, destinationCoordinates);
+    }
+
+    public bool generateDefaultPath()
+    {
+        List<Node> newPath = BreadthFirstSearch(startCoordinates, destinationCoordinates);
+        if (newPath.Count == 0)
+        {
+            return false;
+        }
+        else
+        {
+            defaultPath = newPath;
+            return true;
+        }
+        
     }
 
 

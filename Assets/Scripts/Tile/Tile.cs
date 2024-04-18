@@ -61,9 +61,9 @@ public class Tile : MonoBehaviour, IPointerClickHandler
         {
             // Check if all paths are blocked after placing the tower
             gridManager.Grid[coordinates].isWalkable = false;
-            List<Node> path = pathFinder.BreadthFirstSearch(pathFinder.StartCoordinates, pathFinder.DestinationCoordinates);
+            bool allPathsBlocked = !pathFinder.generateDefaultPath();
             // If all paths are blocked, set the isWalkable back to true and return
-            if (path.Count == 0)
+            if (allPathsBlocked)
             {
                 gridManager.Grid[coordinates].isWalkable = true;
                 Debug.Log("Cannot place tower here, all paths are blocked.");
