@@ -2,7 +2,27 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using System;
+using Random = System.Random;  // To avoid conflicts with UnityEngine.Random
 
+public static class ShuffleExtension
+{
+    private static Random rng = new Random();
+
+    // Fisher-Yates shuffle algorithm
+    public static void Shuffle<T>(this IList<T> list)
+    {
+        int n = list.Count;
+        while (n > 1)
+        {
+            n--;
+            int k = rng.Next(n + 1);
+            T value = list[k];
+            list[k] = list[n];
+            list[n] = value;
+        }
+    }
+}
 public class PathFinder : MonoBehaviour
 {
     [SerializeField] Vector2Int startCoordinates;
@@ -46,7 +66,7 @@ public class PathFinder : MonoBehaviour
             defaultPath = newPath;
             return true;
         }
-        
+
     }
 
 
@@ -65,6 +85,7 @@ public class PathFinder : MonoBehaviour
                 }
             }
         }
+        neighbors.Shuffle();
         return neighbors;
     }
 
@@ -122,7 +143,7 @@ public class PathFinder : MonoBehaviour
             path.Reverse();
         }
 
-        
+
         // foreach (Node node in path)
         // {
         //     Debug.Log(node.coordinates);
